@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Boutique en ligne proposant des vêtements de sport pour hommes.">
+    <title>E-Commerce Sportswear</title>
+    <!-- css link -->
+     <link rel="stylesheet" href="style.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
+   
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">E-Commerce Sportswear</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Accueil <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Produits</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Catégories
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="#" onclick="filterImages('T-SHORT')">T-Shirts</a>
+                <a class="dropdown-item" href="#" onclick="filterImages('SHORT')">Shorts</a>
+                <a class="dropdown-item" href="#" onclick="filterImages('JACKET')">Vestes</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#" onclick="filterImages('ALL')">Tous les produits</a>
+              </div>
+            </li>
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2 search-input" type="search" placeholder="Rechercher" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="button" onclick="searchProducts()">Rechercher</button>
+          </form>
+        </div>
+    </nav>
+    
+    <div class="image-container">
+        <img src="meilleur-site-ecommerce.jpg.webp" class="img-fluid" alt="Bannière du site e-commerce">
+    </div>
+    <br>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9">
+                <section class="shope">
+                    <h1>Nos Produits</h1>
+                    <div class="container">
+                        <div class="row" id="products-container">
+                            <!-- Les produits seront ajoutés ici dynamiquement -->
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="col-md-3">
+                <!-- Panier -->
+                <div class="cart">
+                    <h4>Panier</h4>
+                    <div id="cart-items"></div>
+                    <hr>
+                    <div id="cart-total">
+                        <h5>Total: <span id="total-price">0.00€</span></h5>
+                    </div>
+                    <button class="btn btn-success btn-block mt-2" onclick="checkout()">Passer la commande</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal pour les détails du produit -->
+    <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="productModalLabel">Détails du produit</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="productModalBody">
+                    <!-- Les détails du produit seront ajoutés ici dynamiquement -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                    <button type="button" class="btn btn-primary" id="addToCartModal">Ajouter au panier</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Nouveau Modal pour le formulaire de commande -->
+    <div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="orderModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="orderModalLabel">Finaliser votre commande</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="orderForm" action="place_order.php" >
+                        <div class="form-group">
+                            <label for="name">Nom</label>
+                            <input type="text" class="form-control" id="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Confirmer la commande</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- footr start -->
+    <footer class="bg-dark text-light">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+                    <h5 class="text-uppercase mb-4">À propos</h5>
+                    <p class="small">E-Commerce Sportswear est votre destination pour des vêtements de sport de haute qualité. Notre mission est de vous équiper pour vos performances.</p>
+                    <ul class="list-inline mt-4">
+                        <li class="list-inline-item"><a href="#" class="text-light"><i class="bi bi-facebook"></i></a></li>
+                        <li class="list-inline-item"><a href="#" class="text-light"><i class="bi bi-twitter"></i></a></li>
+                        <li class="list-inline-item"><a href="#" class="text-light"><i class="bi bi-instagram"></i></a></li>
+                        <li class="list-inline-item"><a href="#" class="text-light"><i class="bi bi-linkedin"></i></a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+                    <h5 class="text-uppercase mb-4">Liens utiles</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-light">Accueil</a></li>
+                        <li class="mb-2"><a href="#" class="text-light">Produits</a></li>
+                        <li class="mb-2"><a href="#" class="text-light">À propos de nous</a></li>
+                        <li class="mb-2"><a href="#" class="text-light">Contactez-nous</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+                    <h5 class="text-uppercase mb-4">Service client</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-light">FAQ</a></li>
+                        <li class="mb-2"><a href="#" class="text-light">Livraison & Retours</a></li>
+                        <li class="mb-2"><a href="#" class="text-light">Conditions générales</a></li>
+                        <li class="mb-2"><a href="#" class="text-light">Politique de confidentialité</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
+                    <h5 class="text-uppercase mb-4">Newsletter</h5>
+                    <p class="small">Inscrivez-vous pour recevoir nos dernières offres et nouveautés.</p>
+                    <form>
+                        <div class="input-group mb-3">
+                            <input type="email" class="form-control" placeholder="Votre email" aria-label="Votre email" aria-describedby="button-addon2" required>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="submit" id="button-addon2" onclick="inscrit()">S'inscrire</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="bg-secondary py-2">
+            <div class="container text-center">
+                <p class="mb-0 small">&copy; 2024 E-Commerce Sportswear. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+    <!-- javascript -->
+     <script src="js_code.js"></script>
+
+    <!-- jQuery and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
